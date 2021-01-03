@@ -65,6 +65,11 @@
         when: algo_ssh_tunneling
         tags: ssh_tunneling
 
+      - import_role:
+          name: traffic_shaping
+        when: algo_traffic_shaping
+        tags: traffic_shaping
+
       - block:
         - name: Dump the configuration
           copy:
@@ -83,6 +88,7 @@
               algo_ondemand_wifi_exclude: {{ algo_ondemand_wifi_exclude }}
               algo_dns_adblocking: {{ algo_dns_adblocking }}
               algo_ssh_tunneling: {{ algo_ssh_tunneling }}
+              algo_traffic_shaping: {{ algo_traffic_shaping }}
               algo_store_pki: {{ algo_store_pki }}
               IP_subject_alt_name: {{ IP_subject_alt_name }}
               ipsec_enabled: {{ ipsec_enabled }}

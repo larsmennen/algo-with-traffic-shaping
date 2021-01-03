@@ -1,0 +1,37 @@
+---
+- name: Create traffic-shaping directory
+  file:
+    path: /home/algo/traffic-shaping
+    state: directory
+
+- name: Copy domains.txt
+  copy:
+    src: domains.txt
+    dest: /home/algo/traffic-shaping/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy add-traffic-shaping.sh
+  copy:
+    src: add-traffic-shaping.sh
+    dest: /home/algo/traffic-shaping/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy add-cronjob.sh
+  copy:
+    src: add-cronjob.sh
+    dest: /home/algo/traffic-shaping/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Enable traffic shaping
+  command: /home/algo/traffic-shaping/add-traffic-shaping.sh
+  changed_when: False
+
+- name: Add cronjob
+  command: /home/algo/traffic-shaping/add-cronjob.sh
+  changed_when: False

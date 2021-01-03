@@ -1,3 +1,38 @@
+# Algo VPN with traffic shaping
+
+This is a fork of [Algo VPN](https://github.com/trailofbits/algo) with an additional script to add delays to websites 
+you want to use less.
+
+It was a personal project and is not necessarily the best or most efficient way to do this (e.g. the current set up 
+relies on hourly calling `getent` to resolve hostnames) nor is the code in the cleanest state, but it does the job.
+
+If you want to use this you probably also want to regularly update this repo with the main Algo VPN repo to get the 
+latest updates.
+
+If you like Algo VPN, consider supporting it, see below for details.
+
+## Installation
+
+1. Edit `roles/traffic_shaping/files/domains.txt` and add one domain that you'd like to add delays to per line. E.g.:
+   ```
+   facebook.com
+   twitter.com
+   ```
+2. Edit the delays you want to add (or keep the defaults) in
+   `roles/traffic_shaping/files/add-traffic-shaping.sh`:
+   ```bash
+   # Config, change these to change the delays
+   MEAN_DELAY_MS=15000
+   STDDEV_DELAY_MS=5000
+   ```
+   Note that in practice when you load a website the delay will be longer as there may be multiple requests to resources 
+   on that domain which are executed sequentially.
+3. Follow the Algo installation instructions below, when asked whether you want to enable traffic shaping select yes.
+4. If you ever want to change the settings from step 1 and 2, you can ssh into the VPN server and edit the files, which 
+   will be located in `/home/algo/traffic-shaping`.
+
+---
+
 # Algo VPN
 
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/fold_left.svg?style=social&label=Follow%20%40AlgoVPN)](https://twitter.com/AlgoVPN)

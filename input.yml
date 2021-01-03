@@ -10,6 +10,7 @@
       dns_adblocking: false
       ssh_tunneling: false
       store_pki: false
+      traffic_shaping: false
     providers_map:
       - { name: DigitalOcean, alias: digitalocean }
       - { name: Amazon Lightsail, alias: lightsail }
@@ -107,6 +108,14 @@
         register: _ssh_tunneling
         when: ssh_tunneling is undefined
 
+      - name: Traffic shaping prompt
+        pause:
+          prompt: |
+            Do you want to throttle the domains in roles/traffic-shaping/domains.txt?
+            [y/N]
+        register: _traffic_shaping
+        when: traffic_shaping is undefined
+
       - name: Set facts based on the input
         set_fact:
           algo_server_name: >-
@@ -135,6 +144,10 @@
           algo_ssh_tunneling: >-
             {% if ssh_tunneling is defined %}{{ ssh_tunneling | bool }}
             {%- elif _ssh_tunneling.user_input is defined %}{{ booleans_map[_ssh_tunneling.user_input] | default(defaults['ssh_tunneling']) }}
+            {%- else %}false{% endif %}
+          algo_traffic_shaping: >-
+            {% if traffic_shaping is defined %}{{ traffic_shaping | bool }}
+            {%- elif _traffic_shaping.user_input is defined %}{{ booleans_map[_traffic_shaping.user_input] | default(defaults['traffic_shaping']) }}
             {%- else %}false{% endif %}
           algo_store_pki: >-
             {% if ipsec_enabled %}{%- if store_pki is defined %}{{ store_pki | bool }}

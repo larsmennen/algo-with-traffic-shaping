@@ -109,6 +109,10 @@
           name: ssh_tunneling
         when: algo_ssh_tunneling
 
+      - import_role:
+          name: traffic_shaping
+        when: algo_traffic_shaping
+
       - debug:
           msg:
             - "{{ congrats.common.split('\n') }}"
